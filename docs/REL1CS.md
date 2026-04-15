@@ -422,7 +422,7 @@ COMMIT(payload: [Field; N]) -> Commitment
 | `payload` | `[Field; N]` (private or public) | Content fields to commit to |
 
 The payload is typically the content's hash split into field elements. For content of
-arbitrary length, hash it with SHA-256 or Poseidon externally first, then pass the
+arbitrary length, hash it with Poseidon externally first, then pass the
 digest as the payload.
 
 #### Output
@@ -434,7 +434,7 @@ digest as the payload.
 #### Constraint Count
 
 Approximately **50 constraints** per 3-field block (one Poseidon permutation). For a
-single SHA-256 digest split into 8 field elements: ~3 Poseidon calls → ~150 constraints.
+single 256-bit digest split into 8 field elements: ~3 Poseidon calls → ~150 constraints.
 
 #### Example Usage
 
@@ -698,7 +698,7 @@ you hold the key that signed it).
 
 predicate ContentAuthorship(
     // Public inputs
-    content_hash : Field,   // SHA-256 digest of the post, as a field element
+    content_hash : Field,   // Poseidon hash of the post, as a field element
     author_pubkey: PublicKey,
 
     // Private witness
@@ -761,7 +761,7 @@ let (sig_r, sig_s) = eddsa_sign(&my_secret_key, commitment);
 
 // Build the witness
 let witness = AuthorshipWitness {
-    content_hash:  post.sha256_digest(),
+    content_hash:  post.poseidon_digest(),
     author_pubkey: my_public_key,
     sig_r,
     sig_s,

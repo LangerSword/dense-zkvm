@@ -142,10 +142,14 @@ commits to the entire edge set in a single polynomial, and the COUNT assertion c
 degree of that polynomial — approximately `O(1)` in the constraint count rather than
 `O(k)`.
 
-For `PATH ≤ d`, naive R1CS must enumerate all possible paths up to depth `d` and check
-each, leading to exponential blowup in the worst case. Rel1CS uses a **graph adjacency
-commitment** that the PATH opcode checks via a single multi-scalar multiplication,
-linearizing the cost.
+For `PATH ≤ d`, naive R1CS must enumerate candidate paths up to depth `d` and check
+each, leading to exponential blowup in the worst case. In the current Rel1CS model,
+`PATH` is compiled into up to `d` sequential `EDGE_MEM`-style sub-circuits, one per hop,
+with witness values chaining the destination of step `i` to the source of step `i+1`.
+This makes the cost scale with the allowed path depth rather than with the number of
+possible paths. A more aggressive **graph adjacency commitment** checked with a single MSM
+is a possible optimized formulation, but it is not the mechanism assumed by the opcode
+description in this document.
 
 ---
 

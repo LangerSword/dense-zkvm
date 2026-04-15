@@ -137,10 +137,11 @@ The table below shows typical constraint counts for common social graph predicat
 ### What's happening under the hood
 
 For `COUNT ≥ k`, naive R1CS must individually prove membership for each of `k` edges,
-paying the full Merkle-opening cost per edge. Rel1CS uses a **set accumulator** that
-commits to the entire edge set in a single polynomial, and the COUNT assertion checks the
-degree of that polynomial — approximately `O(1)` in the constraint count rather than
-`O(k)`.
+paying the full Merkle-opening cost per edge. A **planned/future optimization** for Rel1CS
+is to use a set accumulator that commits to the entire edge set in a single polynomial,
+allowing the COUNT assertion to approach approximately `O(1)` constraint cost rather than
+`O(k)`. **The current implementation is still linear in `k`** (as described in the COUNT
+opcode section below).
 
 For `PATH ≤ d`, naive R1CS must enumerate candidate paths up to depth `d` and check
 each, leading to exponential blowup in the worst case. In the current Rel1CS model,

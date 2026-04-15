@@ -321,13 +321,17 @@ PATH(src: NodeId, dst: NodeId, max_depth: u8, root: Root) -> Bool
 
 #### Constraint Count
 
-Approximately **`100 × max_depth` constraints**. At depth 2 (the most common case for
-social applications), this is ~200 constraints.
+Approximately **`12 × max_depth` constraints** for the `EDGE_MEM` checks themselves,
+plus a small linear overhead to link consecutive hops and gate unused slots. At
+depth 2 (the most common case for social applications), this is roughly **24
+constraints for membership checks**, or the **mid-20s overall** including the path
+chaining logic.
 
 The PATH opcode represents the intermediate nodes as private witnesses and verifies
-each hop using an EDGE_MEM sub-circuit. The depth bound `max_depth` is enforced
-structurally — the circuit has exactly `max_depth` EDGE_MEM slots, unused slots are
-filled with a "null edge" that satisfies the sub-circuit without contributing a path.
+each hop using an `EDGE_MEM` sub-circuit, so its cost scales linearly with the
+number of hop slots. The depth bound `max_depth` is enforced structurally — the
+circuit has exactly `max_depth` `EDGE_MEM` slots, and unused slots are gated so they
+do not contribute to the path while still satisfying the fixed circuit shape.
 
 #### Example Usage
 

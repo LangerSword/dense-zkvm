@@ -120,15 +120,19 @@ The table below shows typical constraint counts for common social graph predicat
 | Predicate | Naive R1CS | Rel1CS | Reduction |
 |---|---|---|---|
 | Single edge membership (depth-20 tree) | ~100 constraints | ~12 constraints | ~88% |
-| Follower count ≥ k (k=100) | ~10,000 constraints | ~120 constraints | ~99% |
+| Follower count ≥ k (k=100) | ~10,000 constraints | ~220 constraints | ~98% |
 | Content commitment (Poseidon, 3 inputs) | ~50 constraints | ~50 constraints | 0% (baseline) |
 | EdDSA signature verification | ~1,500 constraints | ~1,500 constraints | 0% (baseline) |
 | Social distance ≤ 2 (BFS depth 2) | ~5,000+ constraints | ~200 constraints | ~96% |
-| Combined follower + authorship + distance | ~16,500+ constraints | ~400 constraints | ~98% |
+| Combined follower + authorship + distance | ~16,500+ constraints | ~500 constraints | ~97% |
 
 > **Note on baselines:** Rel1CS does not reduce constraints for pure arithmetic operations
 > (hashing, signatures). Its gains are concentrated in **relational** operations — membership,
 > counting, and traversal. The combined predicate row is where the savings compound.
+>
+> **Note on COUNT estimates:** The `Follower count ≥ k` row uses the same compiled-cost
+> estimate given later in the COUNT opcode section: approximately `2k + 20` constraints.
+> For `k = 100`, that is `220` constraints.
 
 ### What's happening under the hood
 

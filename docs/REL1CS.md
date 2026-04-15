@@ -916,4 +916,4 @@ the committed set.
 - [ZKProof Community Reference](https://zkproof.org/2020/08/12/reference/)
 - [Vitalik's intro to STARKs and SNARKs](https://vitalik.eth.limo/general/2021/01/26/snarks.html)
 - [arkworks documentation](https://docs.rs/ark-relations/latest/ark_relations/) (the Rust library DenseZK builds on)
-- `knowledge/dense.txt` in this repo — the full mathematical treatment
+- This document is the primary mathematical treatment currently included in the repo.

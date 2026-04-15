@@ -226,10 +226,9 @@ EDGE_MEM(src: NodeId, dst: NodeId, weight: Field, root: Root) -> Bool
 
 #### Constraint Count
 
-Approximately **12 constraints** for a tree of depth 20 (supporting up to ~1M edges),
-using a 2-to-1 Poseidon compression function at each level.
+Approximately 64 constraints for a tree of depth 20 (supporting up to ~1M edges), using a 2-to-1 Poseidon compression function at each level.
 
-For a tree of depth `d`, the count is `⌈d / 2⌉ × 6 + 4` constraints.
+For a tree of depth d, the count is ⌈d / 2⌉ × 6 + 4 constraints.
 
 #### Example Usage
 

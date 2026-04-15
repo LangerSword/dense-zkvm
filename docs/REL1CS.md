@@ -709,16 +709,17 @@ you hold the key that signed it).
 
 predicate ContentAuthorship(
     // Public inputs
-    content_hash : Field,   // Poseidon hash of the post, as a field element
+    content_hash_high: Field, // Upper 128 bits of SHA-256
+    content_hash_low: Field,  // Lower 128 bits of SHA-256
     author_pubkey: PublicKey,
 
     // Private witness
-    sig_r:         Field,
-    sig_s:         Field,
+    sig_r: Field,
+    sig_s: Field,
 ) {
-    // Step 1: commit to the content
-    let commitment = COMMIT(payload = [content_hash]);
-
+    // Step 1: commit to the content using both limbs
+    // This ensures no data is lost to modular reduction
+    let commitment = COMMIT(payload = [content_hash_high, content_hash_low]); 
     // Step 2: verify the author's signature over the commitment
     VERIFY_SIG(
         pubkey    = author_pubkey,

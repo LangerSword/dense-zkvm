@@ -498,31 +498,30 @@ VERIFY_SIG(
 
 ## 6. Circuit Compilation
 
-A Rel1CS predicate is a composition of opcodes. The compiler's job is to turn that
-composition into a concrete Groth16 circuit, run a trusted setup, and produce proving
-and verification keys.
+A Rel1CS predicate is a composition of opcodes. This section describes the intended
+compiler pipeline at a conceptual level. It is **not** a description of a currently
+available `densezk` CLI or of directories that exist in this repository today.
 
-### Step 1 — Write the Predicate
+In the intended flow, a compiler would turn a Rel1CS predicate into a concrete
+Groth16-compatible circuit, then run setup to produce proving and verification keys.
+The file names, commands, and directories below are illustrative placeholders for that
+future workflow.
+
+### Step 1 — Define the Predicate
 
 Predicates are expressed in the Rel1CS DSL (see [Tutorial 1](#tutorial-1--follower-threshold-proof)
-for a concrete example). A predicate file has the extension `.rel` and lives in the
-`predicates/` directory.
+for a concrete example). In a future implementation, a predicate could be stored as a
+source file such as `my_predicate.rel`.
 
-### Step 2 — Compile to Constraint System
+### Step 2 — Compile to a Constraint System
 
-```
-densezk compile predicates/my_predicate.rel --output circuits/
-```
+Conceptually, the compiler would:
+1. Parse the predicate source and resolve opcode calls.
+2. Expand each opcode into its corresponding R1CS sub-circuit.
+3. Wire sub-circuits together, threading public inputs and witnesses.
+4. Emit a circuit description in a serialized format such as JSON or ASN.1.
 
-The compiler:
-1. Parses the `.rel` file and resolves opcode calls.
-2. Expands each opcode into its corresponding R1CS sub-circuit.
-3. Wires sub-circuits together, threading public inputs and witnesses.
-4. Writes a circuit description to `circuits/my_predicate.json` (or `.asn1` for
-   compact binary encoding).
-
-**Circuit JSON format (excerpt):**
-
+**Illustrative circuit JSON format (excerpt):**
 ```json
 {
   "name": "follower_threshold",
